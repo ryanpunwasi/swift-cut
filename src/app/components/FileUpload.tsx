@@ -20,6 +20,7 @@ const FileUpload = () => {
           Upload audio
         </label>
         <input
+          formEncType="multipart/form-data"
           ref={fileRef}
           onChange={onChange}
           accept="audio/*"
