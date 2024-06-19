@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import FileUpload from "./components/FileUpload";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function Home() {
       >
         Trim audio files online for free
       </h1>
+      <FileUpload />
     </main>
   );
 }
