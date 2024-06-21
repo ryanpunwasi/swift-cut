@@ -20,11 +20,12 @@ export async function upload(formData: FormData) {
 
   const file = formData.get("file") as File;
   const buffer = await file.arrayBuffer();
-  const { mime } = (await fileTypeFromBuffer(buffer)) || {
+  const { mime, ext } = (await fileTypeFromBuffer(buffer)) || {
     mime: undefined,
+    ext: undefined,
   };
 
-  if (!mime) new Error("Invalid file type");
+  if (!mime || !ext) new Error("Invalid file type");
 
   try {
     await s3.send(
