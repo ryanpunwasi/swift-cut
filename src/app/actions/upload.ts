@@ -1,18 +1,11 @@
 "use server";
 
 import { fileTypeFromBuffer } from "file-type";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { createId } from "@paralleldrive/cuid2";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-
-const s3 = new S3Client({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY as string,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
-  },
-});
+import { s3 } from "../lib/s3Client";
 
 export async function upload(formData: FormData) {
   const Bucket = process.env.AWS_BUCKET as string;
