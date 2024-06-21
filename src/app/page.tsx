@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   return (
     <main
-      className={`flex min-w-full min-h-full flex-col items-center justify-center gap-y-20 text-3xl sm md:text-5xl tracking-wide font-semibold ${inter.className}`}
+      className={`flex min-w-full min-h-full flex-col items-center justify-center gap-y-20 text-3xl sm md:text-5xl lg:text-6xl tracking-wide font-semibold ${inter.className}`}
     >
       <video
         autoPlay
