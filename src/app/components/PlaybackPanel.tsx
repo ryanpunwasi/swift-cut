@@ -36,7 +36,7 @@ const PlaybackPanel = ({
       {!isPlaying && (
         <button
           onClick={playPause}
-          className="text-gray-200 filter hover:scale-110 active:brightness-110 rounded-lg p-3 transition ease-in-out duration-100 flex justify-center items-center"
+          className="w-12 text-gray-50 filter hover:scale-110 active:brightness-110 rounded-lg p-3 transition ease-in-out duration-100 flex justify-center items-center"
         >
           {<FaPlay size={25} className="mx-auto ml-1" />}
         </button>
@@ -44,7 +44,7 @@ const PlaybackPanel = ({
       {isPlaying && (
         <button
           onClick={controls.playPause}
-          className="text-gray-200 filter hover:scale-110 active:brightness-110 rounded-full p-3 transition ease-in-out duration-100 flex justify-center items-center"
+          className="w-12 text-gray-50 filter hover:scale-110 active:brightness-110 rounded-full p-3 transition ease-in-out duration-100 flex justify-center items-center"
         >
           {<FaPause size={25} className="mx-auto" />}
         </button>
