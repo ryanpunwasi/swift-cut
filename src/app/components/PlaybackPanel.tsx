@@ -50,7 +50,7 @@ const PlaybackPanel = ({
         </button>
       )}
       <button
-        onClick={controls.skipBackward}
+        onClick={controls.skipForward}
         className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100"
       >
         <PiSkipForwardFill size={20} />

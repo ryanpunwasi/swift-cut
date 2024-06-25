@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
-import { useKeyDown } from "../hooks/useKeyDown.hook";
+import { useElapsedTime } from "../hooks/useElapsedTime.hook";
+import { useDuration } from "../hooks/useDuration.hook";
+import PlaybackPanel from "./PlaybackPanel";
 
 type Props = {
   src: string;
@@ -18,39 +20,17 @@ const WaveFormVisualizerContainer = ({ src }: Props) => {
 
 const WaveFormVisualizer = ({ src }: Props) => {
   const waveFormRef = useRef<HTMLDivElement | null>(null);
-  let waveSurfer: WaveSurfer | null;
+  let waveSurfer = useRef<WaveSurfer | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  const [muted, setMuted] = useState(false);
-
-  useKeyDown(" ", () => {
-    waveSurfer?.playPause();
-  });
-
-  useKeyDown("k", () => {
-    waveSurfer?.playPause();
-  });
-
-  useKeyDown("ArrowRight", () => {
-    waveSurfer?.skip(5);
-  });
-
-  useKeyDown("ArrowLeft", () => {
-    waveSurfer?.skip(-5);
-  });
-
-  useKeyDown("j", () => {
-    waveSurfer?.seekTo(0);
-  });
-
-  useKeyDown("l", () => {
-    waveSurfer?.seekTo(1);
-  });
+  const { minutes, seconds, setElapsedSeconds } = useElapsedTime();
+  const { formattedDuration, setDuration } = useDuration(waveSurfer.current);
 
   useEffect(() => {
     const audioElement = new Audio(src);
     audioElement.preload = "auto";
 
-    waveSurfer = WaveSurfer.create({
+    waveSurfer.current = WaveSurfer.create({
       container: waveFormRef.current as HTMLDivElement,
       waveColor: "#404040",
       progressColor: "#f472b6",
@@ -60,32 +40,66 @@ const WaveFormVisualizer = ({ src }: Props) => {
       normalize: true,
       backend: "MediaElement",
       media: audioElement,
+      autoplay: false,
+      barGap: 2,
+      barWidth: 2,
+      barRadius: 10,
     });
 
-    waveSurfer.on("interaction", () => {
-      waveSurfer?.play();
+    waveSurfer.current.on("dblclick", () => {
+      playPause();
     });
 
-    waveSurfer.on("timeupdate", () => {
-      const currentTime = Math.round(waveSurfer?.getCurrentTime() || 0);
-      let minutes = Math.floor(currentTime! / 60);
-      let extraSeconds = Math.round(currentTime!) % 60;
-      const formattedMinutes =
-        minutes < 10 ? "0" + minutes : minutes.toString();
-      const formattedExtraSeconds =
-        extraSeconds < 10 ? "0" + extraSeconds : extraSeconds.toString();
+    waveSurfer.current.on("ready", function () {
+      if (waveSurfer.current) {
+        const totalTime = waveSurfer.current.getDuration();
+        setDuration(totalTime);
+      }
+    });
 
-      console.log(`${formattedMinutes}:${formattedExtraSeconds}`);
+    waveSurfer.current.on("play", () => {
+      setIsPlaying(true);
+    });
+
+    waveSurfer.current.on("pause", () => {
+      setIsPlaying(false);
+    });
+
+    waveSurfer.current.on("timeupdate", () => {
+      const currentTime = Math.round(waveSurfer.current?.getCurrentTime() || 0);
+      setElapsedSeconds(currentTime);
     });
 
     return () => {
-      waveSurfer?.destroy();
+      waveSurfer.current?.destroy();
     };
-  }, [src]);
+  }, []);
+
+  const playPause = () => {
+    waveSurfer.current?.playPause();
+  };
+
+  const skipForward = () => {
+    waveSurfer.current?.skip(5);
+  };
+
+  const skipBackward = () => {
+    waveSurfer.current?.skip(-5);
+  };
 
   return (
     <div>
-      <div ref={waveFormRef}>{muted && <>Muted</>}</div>
+      <div ref={waveFormRef} className="hover:cursor-pointer"></div>
+      <div className="flex justify-center absolute bottom-10 left-1/2 right-1/2">
+        <PlaybackPanel
+          duration={formattedDuration}
+          currentTime={`${minutes}:${seconds}`}
+          playPause={playPause}
+          controls={{ playPause, skipForward, skipBackward }}
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+        />
+      </div>
     </div>
   );
 };
