@@ -31,6 +31,13 @@ const WaveFormVisualizer = ({ src }: Props) => {
     waveSurfer.current?.playPause();
   });
 
+  useKeyDown("j", () => {
+    waveSurfer.current?.skip(-10);
+  });
+  useKeyDown("l", () => {
+    waveSurfer.current?.skip(10);
+  });
+
   useKeyDown("k", () => {
     waveSurfer.current?.playPause();
   });
@@ -41,6 +48,10 @@ const WaveFormVisualizer = ({ src }: Props) => {
 
   useKeyDown("ArrowLeft", () => {
     waveSurfer.current?.skip(-5);
+  });
+
+  useKeyDown("0", () => {
+    waveSurfer.current?.setTime(0);
   });
 
   useEffect(() => {
