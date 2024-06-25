@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
+import { useKeyDown } from "../hooks/useKeyDown.hook";
 import { useElapsedTime } from "../hooks/useElapsedTime.hook";
 import { useDuration } from "../hooks/useDuration.hook";
 import PlaybackPanel from "./PlaybackPanel";
@@ -25,6 +26,22 @@ const WaveFormVisualizer = ({ src }: Props) => {
 
   const { minutes, seconds, setElapsedSeconds } = useElapsedTime();
   const { formattedDuration, setDuration } = useDuration(waveSurfer.current);
+
+  useKeyDown(" ", () => {
+    waveSurfer.current?.playPause();
+  });
+
+  useKeyDown("k", () => {
+    waveSurfer.current?.playPause();
+  });
+
+  useKeyDown("ArrowRight", () => {
+    waveSurfer.current?.skip(5);
+  });
+
+  useKeyDown("ArrowLeft", () => {
+    waveSurfer.current?.skip(-5);
+  });
 
   useEffect(() => {
     const audioElement = new Audio(src);
