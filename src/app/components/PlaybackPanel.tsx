@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa";
 import { PiSkipForwardFill, PiSkipBackFill } from "react-icons/pi";
@@ -24,11 +25,25 @@ const PlaybackPanel = ({
   controls,
   isPlaying,
 }: Props) => {
+  const skipBackButtonRef = useRef<HTMLButtonElement | null>(null);
+  const skipForwardButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  const handleSkipBackward = () => {
+    controls.skipBackward();
+    skipBackButtonRef.current?.blur();
+  };
+
+  const handleSkipForward = () => {
+    controls.skipForward();
+    skipForwardButtonRef.current?.blur();
+  };
+
   return (
     <div className="bg-gray-700 rounded-lg py-1 px-7 flex justify-center items-center w-fit gap-2 opacity-80 hover:opacity-100 transition ease-in-out duration-100">
       <span className="w-12 text-gray-400 text-sm">{currentTime}</span>
       <button
-        onClick={controls.skipBackward}
+        ref={skipBackButtonRef}
+        onClick={handleSkipBackward}
         className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100"
       >
         <PiSkipBackFill size={20} />
@@ -50,7 +65,8 @@ const PlaybackPanel = ({
         </button>
       )}
       <button
-        onClick={controls.skipForward}
+        ref={skipForwardButtonRef}
+        onClick={handleSkipForward}
         className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100"
       >
         <PiSkipForwardFill size={20} />
