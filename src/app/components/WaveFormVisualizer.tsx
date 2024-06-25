@@ -7,11 +7,15 @@ import { useElapsedTime } from "../hooks/useElapsedTime.hook";
 import { useDuration } from "../hooks/useDuration.hook";
 import PlaybackPanel from "./PlaybackPanel";
 
-type Props = {
+type ContainerProps = {
   src: string;
 };
 
-const WaveFormVisualizerContainer = ({ src }: Props) => {
+type WaveFormProps = {
+  src: string;
+};
+
+const WaveFormVisualizerContainer = ({ src }: ContainerProps) => {
   return (
     <>
       <WaveFormVisualizer src={src} />
@@ -19,7 +23,7 @@ const WaveFormVisualizerContainer = ({ src }: Props) => {
   );
 };
 
-const WaveFormVisualizer = ({ src }: Props) => {
+const WaveFormVisualizer = ({ src }: WaveFormProps) => {
   const waveFormRef = useRef<HTMLDivElement | null>(null);
   let waveSurfer = useRef<WaveSurfer | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -72,6 +76,7 @@ const WaveFormVisualizer = ({ src }: Props) => {
       barGap: 2,
       barWidth: 2,
       barRadius: 10,
+      plugins: [],
     });
 
     waveSurfer.current.on("dblclick", () => {
