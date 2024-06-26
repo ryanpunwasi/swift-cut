@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa";
 import { PiSkipForwardFill, PiSkipBackFill } from "react-icons/pi";
+import { Tooltip } from "react-tooltip";
 
 type Props = {
   currentTime: string;
@@ -42,6 +43,8 @@ const PlaybackPanel = ({
     <div className="bg-gray-700 rounded-lg py-1 px-7 flex justify-center items-center w-fit gap-2 opacity-80 hover:opacity-100 transition ease-in-out duration-100">
       <span className="w-12 text-gray-400 text-sm">{currentTime}</span>
       <button
+        data-tooltip-id="skip-backward-toolip-identifier"
+        data-tooltip-content="-5 seconds"
         ref={skipBackButtonRef}
         onClick={handleSkipBackward}
         className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100"
@@ -65,6 +68,8 @@ const PlaybackPanel = ({
         </button>
       )}
       <button
+        data-tooltip-id="skip-forward-toolip-identifier"
+        data-tooltip-content="+5 seconds"
         ref={skipForwardButtonRef}
         onClick={handleSkipForward}
         className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100"
@@ -72,6 +77,26 @@ const PlaybackPanel = ({
         <PiSkipForwardFill size={20} />
       </button>
       <span className="w-12 text-gray-400 text-sm">{duration}</span>
+      <Tooltip
+        id="skip-forward-toolip-identifier"
+        place="top"
+        style={{
+          backgroundColor: "white",
+          color: "black",
+          opacity: 0.6,
+          borderRadius: "15px",
+        }}
+      />
+      <Tooltip
+        id="skip-backward-toolip-identifier"
+        place="top"
+        style={{
+          backgroundColor: "white",
+          color: "black",
+          opacity: 0.6,
+          borderRadius: "15px",
+        }}
+      />
     </div>
   );
 };
