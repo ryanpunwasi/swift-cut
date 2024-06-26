@@ -42,13 +42,6 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
     waveSurfer.current?.playPause();
   });
 
-  useKeyDown("j", () => {
-    waveSurfer.current?.skip(-10);
-  });
-  useKeyDown("l", () => {
-    waveSurfer.current?.skip(10);
-  });
-
   useKeyDown("k", () => {
     waveSurfer.current?.playPause();
   });
@@ -116,15 +109,15 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
       });
     });
 
-    regions.on("region-created", e => {
+    regions.on("region-created", (e: any) => {
       setRegionBoundaries([e.start, e.end]);
     });
 
-    regions.on("region-double-clicked", e => {
+    regions.on("region-double-clicked", (e: any) => {
       e.play();
     });
 
-    regions.on("region-out", e => {
+    regions.on("region-out", (e: any) => {
       e.play();
     });
 

@@ -52,9 +52,7 @@ export default async function CutPage() {
           controls
           loop
         ></video> */}
-        <WaveFormVisualizerContainer
-          src={`https://d2w8muq8s9pt97.cloudfront.net/${keyCookie.value}`}
-        />
+        <WaveFormVisualizerContainer src={`/test_audio.mp3`} />
       </div>
     </main>
   );
