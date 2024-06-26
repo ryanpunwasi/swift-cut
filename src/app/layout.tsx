@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className="h-screen w-screen">
         <nav className="border-b border-gray-900 flex items-center justify-between absolute top-0 left-0 z-30 w-full bg-transparent backdrop-blur-sm h-24 px-20">
           <Link
-            className="text-3xl transition hover:-translate-y-1"
+            className="text-3xl transition hover:-translate-y-1 -rotate-45"
             href="/"
             title="Home"
           >
