@@ -8,6 +8,7 @@ import { useDuration } from "../hooks/useDuration.hook";
 import PlaybackPanel from "./PlaybackPanel";
 
 import RegionsPlugin from "wavesurfer.js/dist/plugins/regions.esm.js";
+import Hover from "wavesurfer.js/dist/plugins/hover.esm.js";
 
 type ContainerProps = {
   src: string;
@@ -81,7 +82,16 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
       barGap: 2,
       barWidth: 2,
       barRadius: 10,
-      plugins: [],
+      cursorColor: "white",
+      plugins: [
+        Hover.create({
+          lineColor: "white",
+          lineWidth: 1,
+          labelBackground: "#2C2C2C",
+          labelColor: "#fff",
+          labelSize: "14px",
+        }),
+      ],
     });
 
     const regions = waveSurfer.current.registerPlugin(RegionsPlugin.create());
@@ -91,17 +101,18 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
       const start = duration * 0.25;
       const end = duration * 0.75;
 
-      regions.addRegion({
+      const region = regions.addRegion({
         start,
         end,
         color: "rgba(154, 154, 154, 0.54)",
         drag: true,
         resize: true,
+        maxLength: waveSurfer.current?.getDuration(),
       });
-    });
 
-    regions.on("region-updated", e => {
-      setRegionBoundaries([e.start, e.end]);
+      region.on("update-end", () => {
+        setRegionBoundaries([region.start, region.end]);
+      });
     });
 
     regions.on("region-created", e => {
