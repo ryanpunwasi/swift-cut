@@ -124,6 +124,10 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
       e.play();
     });
 
+    regions.on("region-out", e => {
+      e.play();
+    });
+
     waveSurfer.current.on("ready", function () {
       if (waveSurfer.current) {
         const totalTime = waveSurfer.current.getDuration();
