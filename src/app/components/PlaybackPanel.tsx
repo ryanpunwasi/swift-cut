@@ -80,20 +80,20 @@ const PlaybackPanel = ({
       <Tooltip
         id="skip-forward-toolip-identifier"
         place="top"
+        opacity={0.6}
         style={{
           backgroundColor: "white",
           color: "black",
-          opacity: 0.6,
           borderRadius: "15px",
         }}
       />
       <Tooltip
         id="skip-backward-toolip-identifier"
         place="top"
+        opacity={0.6}
         style={{
           backgroundColor: "white",
           color: "black",
-          opacity: 0.6,
           borderRadius: "15px",
         }}
       />
