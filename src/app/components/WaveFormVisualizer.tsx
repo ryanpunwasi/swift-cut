@@ -7,6 +7,8 @@ import { useElapsedTime } from "../hooks/useElapsedTime.hook";
 import { useDuration } from "../hooks/useDuration.hook";
 import PlaybackPanel from "./PlaybackPanel";
 
+import RegionsPlugin from "wavesurfer.js/dist/plugins/regions.esm.js";
+
 type ContainerProps = {
   src: string;
 };
@@ -27,6 +29,9 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
   const waveFormRef = useRef<HTMLDivElement | null>(null);
   let waveSurfer = useRef<WaveSurfer | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [regionBoundaries, setRegionBoundaries] = useState<
+    [number, number] | []
+  >([]);
 
   const { minutes, seconds, setElapsedSeconds } = useElapsedTime();
   const { formattedDuration, setDuration } = useDuration(waveSurfer.current);
@@ -79,8 +84,28 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
       plugins: [],
     });
 
-    waveSurfer.current.on("dblclick", () => {
-      playPause();
+    const regions = waveSurfer.current.registerPlugin(RegionsPlugin.create());
+
+    waveSurfer.current.on("decode", () => {
+      const duration = waveSurfer.current?.getDuration() as number;
+      const start = duration * 0.25;
+      const end = duration * 0.75;
+
+      regions.addRegion({
+        start,
+        end,
+        color: "rgba(154, 154, 154, 0.54)",
+        drag: true,
+        resize: true,
+      });
+    });
+
+    regions.on("region-updated", e => {
+      setRegionBoundaries([e.start, e.end]);
+    });
+
+    regions.on("region-created", e => {
+      setRegionBoundaries([e.start, e.end]);
     });
 
     waveSurfer.current.on("ready", function () {
