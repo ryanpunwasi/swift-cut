@@ -29,6 +29,7 @@ const WaveFormVisualizerContainer = ({ src }: ContainerProps) => {
 const WaveFormVisualizer = ({ src }: WaveFormProps) => {
   const waveFormRef = useRef<HTMLDivElement | null>(null);
   let waveSurfer = useRef<WaveSurfer | null>(null);
+  let regionRef = useRef<any | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [regionBoundaries, setRegionBoundaries] = useState<
     [number, number] | []
@@ -101,7 +102,7 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
       const start = duration * 0.25;
       const end = duration * 0.75;
 
-      const region = regions.addRegion({
+      regionRef.current = regions.addRegion({
         start,
         end,
         color: "rgba(154, 154, 154, 0.54)",
@@ -110,13 +111,17 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
         maxLength: waveSurfer.current?.getDuration(),
       });
 
-      region.on("update-end", () => {
-        setRegionBoundaries([region.start, region.end]);
+      regionRef.current.on("update-end", () => {
+        setRegionBoundaries([regionRef.current.start, regionRef.current.end]);
       });
     });
 
     regions.on("region-created", e => {
       setRegionBoundaries([e.start, e.end]);
+    });
+
+    regions.on("region-double-clicked", e => {
+      e.play();
     });
 
     waveSurfer.current.on("ready", function () {
