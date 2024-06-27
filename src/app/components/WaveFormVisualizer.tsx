@@ -165,8 +165,16 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
       <div ref={waveFormRef} className="hover:cursor-pointer"></div>
       <div className="flex justify-center mt-5">
         <RegionBoundaries
-          start={regionBoundaries[0] ? truncate(regionBoundaries[0]) : null}
-          end={regionBoundaries[1] ? truncate(regionBoundaries[1]) : null}
+          start={
+            regionBoundaries[0] !== undefined
+              ? truncate(regionBoundaries[0])
+              : null
+          }
+          end={
+            regionBoundaries[1] !== undefined
+              ? truncate(regionBoundaries[1])
+              : null
+          }
         />
       </div>
 
