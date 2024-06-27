@@ -9,6 +9,8 @@ import PlaybackPanel from "./PlaybackPanel";
 
 import RegionsPlugin from "wavesurfer.js/dist/plugins/regions.esm.js";
 import Hover from "wavesurfer.js/dist/plugins/hover.esm.js";
+import RegionBoundaries from "./RegionBoundaries";
+import { truncate } from "../lib/truncate";
 
 type ContainerProps = {
   src: string;
@@ -161,6 +163,13 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
   return (
     <div>
       <div ref={waveFormRef} className="hover:cursor-pointer"></div>
+      <div className="flex justify-center mt-5">
+        <RegionBoundaries
+          start={regionBoundaries[0] ? truncate(regionBoundaries[0]) : null}
+          end={regionBoundaries[1] ? truncate(regionBoundaries[1]) : null}
+        />
+      </div>
+
       <div className="flex justify-center absolute bottom-10 left-1/2 right-1/2">
         <PlaybackPanel
           duration={formattedDuration}
