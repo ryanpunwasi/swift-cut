@@ -33,6 +33,7 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
   let waveSurfer = useRef<WaveSurfer | null>(null);
   let regionRef = useRef<any | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [regionBoundaries, setRegionBoundaries] = useState<
     [number, number] | []
   >([]);
@@ -130,6 +131,10 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
       }
     });
 
+    waveSurfer.current.on("redraw", function () {
+      setLoading(false);
+    });
+
     waveSurfer.current.on("play", () => {
       setIsPlaying(true);
     });
@@ -162,7 +167,12 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
 
   return (
     <div>
-      <div ref={waveFormRef} className="hover:cursor-pointer"></div>
+      <div
+        ref={waveFormRef}
+        className={`hover:cursor-pointer  ${
+          loading ? "" : "border-r border-l border-gray-300"
+        }`}
+      ></div>
       <div className="flex justify-center mt-5">
         <RegionBoundaries
           start={
