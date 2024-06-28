@@ -7,7 +7,6 @@ import {
   FaVolumeXmark,
   FaMagnifyingGlassPlus,
 } from "react-icons/fa6";
-import { HiMiniMagnifyingGlassPlus } from "react-icons/hi2";
 
 import { PiSkipForwardFill, PiSkipBackFill } from "react-icons/pi";
 
