@@ -1,4 +1,6 @@
 "use client";
+import { useFormattedTime } from "../hooks/useFormattedTime.hook";
+
 type Props = {
   start: number | null;
   end: number | null;
@@ -11,6 +13,10 @@ const RegionBoundaries = ({ start, end }: Props) => {
     return null;
   }
 
+  const { minutes: startMinutes, seconds: startSeconds } =
+    useFormattedTime(start);
+  const { minutes: endMinutes, seconds: endSeconds } = useFormattedTime(end);
+
   return (
     <div className="flex items-center justify-center gap-3 text-sm">
       <span
@@ -18,7 +24,7 @@ const RegionBoundaries = ({ start, end }: Props) => {
         data-tooltip-content="Region start time"
         className="h-9 bg-zinc-900 px-4 py-1.5 rounded-xl border border-gray-700 w-20 flex justify-center items-center text-blue-200"
       >
-        {start}
+        {startMinutes}:{startSeconds}
       </span>
       <span className="font-thin text-gray-500">—</span>
       <span
@@ -26,7 +32,7 @@ const RegionBoundaries = ({ start, end }: Props) => {
         data-tooltip-content="Region end time"
         className="h-9 bg-zinc-900 px-4 py-1.5 rounded-xl border border-gray-700 w-20 flex justify-center items-center text-blue-200"
       >
-        {end}
+        {endMinutes}:{endSeconds}
       </span>
       <Tooltip
         id="region-start-identifier"
