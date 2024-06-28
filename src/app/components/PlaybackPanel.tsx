@@ -151,13 +151,13 @@ const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
         <span className="absolute bottom-0">-</span>
         <input
           type="range"
-          id="volume"
-          name="volume"
+          id="zoom"
+          name="zoom"
           min="1"
           max="100"
           value={sliderValue}
           onChange={handleOnChange}
-          className="absolute h-3/4 w-10 my-auto"
+          className="absolute h-3/4 w-10 my-auto outline-none"
           style={{ WebkitAppearance: "slider-vertical", MozOrient: "vertical" }}
         />
       </div>
