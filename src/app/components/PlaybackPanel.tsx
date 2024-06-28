@@ -1,9 +1,16 @@
 "use client";
 
 import { useRef } from "react";
-import { FaPlay } from "react-icons/fa";
-import { FaPause } from "react-icons/fa";
+import { FaPlay, FaPause } from "react-icons/fa";
+import {
+  FaVolumeHigh,
+  FaVolumeXmark,
+  FaMagnifyingGlassPlus,
+} from "react-icons/fa6";
+import { HiMiniMagnifyingGlassPlus } from "react-icons/hi2";
+
 import { PiSkipForwardFill, PiSkipBackFill } from "react-icons/pi";
+
 import { Tooltip } from "react-tooltip";
 
 type Props = {
@@ -14,9 +21,11 @@ type Props = {
     playPause: () => void;
     skipBackward: () => void;
     skipForward: () => void;
+    toggleMute: () => void;
   };
   isPlaying: boolean;
   setIsPlaying: (isPlaying: boolean) => void;
+  isMuted: boolean;
 };
 
 const PlaybackPanel = ({
@@ -25,9 +34,11 @@ const PlaybackPanel = ({
   playPause,
   controls,
   isPlaying,
+  isMuted,
 }: Props) => {
   const skipBackButtonRef = useRef<HTMLButtonElement | null>(null);
   const skipForwardButtonRef = useRef<HTMLButtonElement | null>(null);
+  const volumeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const handleSkipBackward = () => {
     controls.skipBackward();
@@ -39,9 +50,24 @@ const PlaybackPanel = ({
     skipForwardButtonRef.current?.blur();
   };
 
+  const handleMuteToggle = () => {
+    controls.toggleMute();
+    volumeButtonRef.current?.blur();
+  };
+
   return (
     <div className="bg-gray-700 rounded-lg py-1 px-7 flex justify-center items-center w-fit gap-2 opacity-80 hover:opacity-100 transition ease-in-out duration-100">
-      <span className="w-12 text-gray-400 text-sm">{currentTime}</span>
+      <span className="w-12 text-gray-400 text-sm flex justify-center">
+        {currentTime}
+      </span>
+      <button
+        ref={volumeButtonRef}
+        onClick={handleMuteToggle}
+        className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100"
+      >
+        {!isMuted && <FaVolumeHigh size={20} />}
+        {isMuted && <FaVolumeXmark size={20} className="text-red-300" />}
+      </button>
       <button
         data-tooltip-id="skip-backward-toolip-identifier"
         data-tooltip-content="-5 seconds"
@@ -76,7 +102,12 @@ const PlaybackPanel = ({
       >
         <PiSkipForwardFill size={20} />
       </button>
-      <span className="w-12 text-gray-400 text-sm">{duration}</span>
+      <button className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100">
+        <FaMagnifyingGlassPlus size={20} />
+      </button>
+      <span className="w-12 text-gray-400 text-sm flex justify-center">
+        {duration}
+      </span>
       <Tooltip
         id="skip-forward-toolip-identifier"
         place="top"

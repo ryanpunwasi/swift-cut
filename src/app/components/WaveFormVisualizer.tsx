@@ -33,6 +33,7 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
   let waveSurfer = useRef<WaveSurfer | null>(null);
   let regionRef = useRef<any | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [regionBoundaries, setRegionBoundaries] = useState<
     [number, number] | []
@@ -157,6 +158,15 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
     waveSurfer.current?.playPause();
   };
 
+  const toggleMute = () => {
+    const isMuted = waveSurfer.current?.getMuted();
+    if (isMuted !== undefined) {
+      const newMuteState = !isMuted;
+      setIsMuted(newMuteState);
+      waveSurfer.current?.setMuted(newMuteState);
+    }
+  };
+
   const skipForward = () => {
     waveSurfer.current?.skip(5);
   };
@@ -193,8 +203,9 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
           duration={formattedDuration}
           currentTime={`${minutes}:${seconds}`}
           playPause={playPause}
-          controls={{ playPause, skipForward, skipBackward }}
+          controls={{ playPause, skipForward, skipBackward, toggleMute }}
           isPlaying={isPlaying}
+          isMuted={isMuted}
           setIsPlaying={setIsPlaying}
         />
       </div>
