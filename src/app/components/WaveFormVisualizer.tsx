@@ -81,6 +81,7 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
       barWidth: 2,
       barRadius: 10,
       cursorColor: "white",
+      minPxPerSec: 1,
       plugins: [
         Hover.create({
           lineColor: "white",
@@ -121,9 +122,7 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
       e.play();
     });
 
-    regions.on("region-out", (e: any) => {
-      e.play();
-    });
+    regions.on("region-out", (e: any) => {});
 
     waveSurfer.current.on("ready", function () {
       if (waveSurfer.current) {
@@ -200,6 +199,7 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
 
       <div className="flex justify-center absolute bottom-10 left-1/2 right-1/2">
         <PlaybackPanel
+          waveSurfer={waveSurfer.current}
           duration={formattedDuration}
           currentTime={`${minutes}:${seconds}`}
           playPause={playPause}

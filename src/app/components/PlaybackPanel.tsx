@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FaPlay, FaPause } from "react-icons/fa";
 import {
   FaVolumeHigh,
@@ -11,6 +11,7 @@ import {
 import { PiSkipForwardFill, PiSkipBackFill } from "react-icons/pi";
 
 import { Tooltip } from "react-tooltip";
+import WaveSurfer from "wavesurfer.js/dist/types.js";
 
 type Props = {
   currentTime: string;
@@ -25,6 +26,7 @@ type Props = {
   isPlaying: boolean;
   setIsPlaying: (isPlaying: boolean) => void;
   isMuted: boolean;
+  waveSurfer: any;
 };
 
 const PlaybackPanel = ({
@@ -34,6 +36,7 @@ const PlaybackPanel = ({
   controls,
   isPlaying,
   isMuted,
+  waveSurfer,
 }: Props) => {
   const skipBackButtonRef = useRef<HTMLButtonElement | null>(null);
   const skipForwardButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -101,7 +104,7 @@ const PlaybackPanel = ({
       >
         <PiSkipForwardFill size={20} />
       </button>
-      <ZoomControl />
+      <ZoomControl waveSurfer={waveSurfer} />
       <span className="w-12 text-gray-400 text-sm flex justify-center">
         {duration}
       </span>
@@ -129,10 +132,14 @@ const PlaybackPanel = ({
   );
 };
 
-const ZoomControl = () => {
+const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
   const [open, setOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState("0");
 
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSliderValue(e.target.value);
+    waveSurfer?.zoom(Number(e.target.value));
+  };
   return (
     <div className="relative">
       <div
@@ -146,10 +153,10 @@ const ZoomControl = () => {
           type="range"
           id="volume"
           name="volume"
-          min="0"
+          min="1"
           max="100"
           value={sliderValue}
-          onChange={e => setSliderValue(e.target.value)}
+          onChange={handleOnChange}
           className="absolute h-3/4 w-10 my-auto"
           style={{ WebkitAppearance: "slider-vertical", MozOrient: "vertical" }}
         />
