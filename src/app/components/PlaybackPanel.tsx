@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaPlay, FaPause } from "react-icons/fa";
 import {
   FaVolumeHigh,
@@ -101,9 +101,7 @@ const PlaybackPanel = ({
       >
         <PiSkipForwardFill size={20} />
       </button>
-      <button className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100">
-        <FaMagnifyingGlassPlus size={20} />
-      </button>
+      <ZoomControl />
       <span className="w-12 text-gray-400 text-sm flex justify-center">
         {duration}
       </span>
@@ -127,6 +125,41 @@ const PlaybackPanel = ({
           borderRadius: "15px",
         }}
       />
+    </div>
+  );
+};
+
+const ZoomControl = () => {
+  const [open, setOpen] = useState(false);
+  const [sliderValue, setSliderValue] = useState("0");
+
+  return (
+    <div className="relative">
+      <div
+        className={`flex flex-col items-center justify-center mx-auto h-52 w-10 rounded-lg absolute bottom-14 z-30 bg-gray-700 transition duration-200 ease-in-out ${
+          open ? "opacity-100" : "translate-y-2 opacity-0"
+        }`}
+      >
+        <span className="absolute top-0">+</span>
+        <span className="absolute bottom-0">-</span>
+        <input
+          type="range"
+          id="volume"
+          name="volume"
+          min="0"
+          max="100"
+          value={sliderValue}
+          onChange={e => setSliderValue(e.target.value)}
+          className="absolute h-3/4 w-10 my-auto"
+          style={{ WebkitAppearance: "slider-vertical", MozOrient: "vertical" }}
+        />
+      </div>
+      <button
+        onClick={() => setOpen(prev => !prev)}
+        className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100"
+      >
+        <FaMagnifyingGlassPlus size={20} />
+      </button>
     </div>
   );
 };
