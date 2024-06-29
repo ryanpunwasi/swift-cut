@@ -50,6 +50,10 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
     waveSurfer.current?.playPause();
   });
 
+  useKeyDown("m", () => {
+    toggleMute();
+  });
+
   useKeyDown("ArrowRight", () => {
     waveSurfer.current?.skip(5);
   });
