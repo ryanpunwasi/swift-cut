@@ -10,18 +10,21 @@ type Props = {
 import { Tooltip } from "react-tooltip";
 
 const RegionBoundaries = ({ start, end }: Props) => {
-  if (start === null || end === null) {
-    return null;
-  }
-
   const [loading, setLoading] = useState(false);
-  const { minutes: startMinutes, seconds: startSeconds } =
-    useFormattedTime(start);
-  const { minutes: endMinutes, seconds: endSeconds } = useFormattedTime(end);
+  const { minutes: startMinutes, seconds: startSeconds } = useFormattedTime(
+    start || 0
+  );
+  const { minutes: endMinutes, seconds: endSeconds } = useFormattedTime(
+    end || 0
+  );
 
   const handleSubmit = () => {
     setLoading(true);
   };
+
+  if (start === null || end === null) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col justify-center items-center gap-5">
