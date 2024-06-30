@@ -135,6 +135,7 @@ const PlaybackPanel = ({
 const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
   const [open, setOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState("0");
+  const zoomButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSliderValue(e.target.value);
@@ -158,11 +159,19 @@ const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
           value={sliderValue}
           onChange={handleOnChange}
           className="absolute h-3/4 w-10 my-auto outline-none"
-          style={{ WebkitAppearance: "slider-vertical", MozOrient: "vertical" }}
+          style={{
+            writingMode: "vertical-lr",
+            direction: "rtl",
+            MozOrient: "vertical",
+          }}
         />
       </div>
       <button
-        onClick={() => setOpen(prev => !prev)}
+        ref={zoomButtonRef}
+        onClick={() => {
+          setOpen(prev => !prev);
+          zoomButtonRef.current?.blur();
+        }}
         className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100"
       >
         <FaMagnifyingGlassPlus size={20} />
