@@ -1,15 +1,23 @@
 "use client";
 import { useState } from "react";
 import { useFormattedTime } from "../hooks/useFormattedTime.hook";
+import { BeatLoader } from "react-spinners";
 
 type Props = {
   start: number | null;
   end: number | null;
+  rawRegionBoundaries: [number, number] | [];
+  s3Key: string;
 };
 
 import { Tooltip } from "react-tooltip";
 
-const RegionBoundaries = ({ start, end }: Props) => {
+const RegionBoundaries = ({
+  start,
+  end,
+  rawRegionBoundaries,
+  s3Key,
+}: Props) => {
   const [loading, setLoading] = useState(false);
   const { minutes: startMinutes, seconds: startSeconds } = useFormattedTime(
     start || 0
@@ -20,6 +28,7 @@ const RegionBoundaries = ({ start, end }: Props) => {
 
   const handleSubmit = () => {
     setLoading(true);
+    console.log(rawRegionBoundaries, s3Key);
   };
 
   if (start === null || end === null) {
@@ -69,11 +78,15 @@ const RegionBoundaries = ({ start, end }: Props) => {
       <button
         onClick={handleSubmit}
         disabled={loading}
-        className={`w-36 tracking-wide disabled:brightness-75 disabled:cursor-not-allowed filter hover:brightness-110 active:brightness-125 saturate-150 text-sm bg-fuchsia-900 font-semibold text-fuchsia-100 rounded-lg px-4 py-2 
+        className={`h-10 flex justify-center items-center w-36 tracking-wide disabled:brightness-75 disabled:cursor-not-allowed filter hover:brightness-110 active:brightness-125 saturate-150 text-sm bg-fuchsia-900 font-semibold text-fuchsia-100 rounded-lg px-5 py-2 
 
         }`}
       >
-        {loading ? "✂️ Trimming..." : "Trim audio"}
+        {loading ? (
+          <BeatLoader loading={loading} size={5} color="white" />
+        ) : (
+          "Trim audio"
+        )}
       </button>
     </div>
   );
