@@ -122,6 +122,10 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
       setRegionBoundaries([e.start, e.end]);
     });
 
+    regions.on("region-out", (e: any) => {
+      e.play();
+    });
+
     regions.on("region-double-clicked", (e: any) => {
       e.play();
     });
