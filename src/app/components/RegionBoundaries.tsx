@@ -67,7 +67,7 @@ const RegionBoundaries = ({ start, end }: Props) => {
         />
       </div>
       <button
-        onClick={() => handleSubmit()}
+        onClick={handleSubmit}
         disabled={loading}
         className={`w-36 tracking-wide disabled:brightness-75 disabled:cursor-not-allowed filter hover:brightness-110 active:brightness-125 saturate-150 text-sm bg-fuchsia-900 font-semibold text-fuchsia-100 rounded-lg px-4 py-2 
 
