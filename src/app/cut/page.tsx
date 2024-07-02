@@ -46,13 +46,9 @@ export default async function CutPage() {
       className={`flex min-w-full min-h-full flex-col items-center justify-center gap-y-20 tracking-wide font-semibold ${inter.className}`}
     >
       <div className="h-fit md:w-1/2 w-4/5 flex justify-center items-center">
-        {/* <video
+        <WaveFormVisualizerContainer
           src={`https://d2w8muq8s9pt97.cloudfront.net/${keyCookie.value}`}
-          autoPlay
-          controls
-          loop
-        ></video> */}
-        <WaveFormVisualizerContainer src={`/test_audio.mp3`} />
+        />
       </div>
     </main>
   );
