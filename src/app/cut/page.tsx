@@ -47,6 +47,7 @@ export default async function CutPage() {
     >
       <div className="h-fit md:w-1/2 w-4/5 flex justify-center items-center">
         <WaveFormVisualizerContainer
+          s3Key={keyCookie.value}
           src={`https://d2w8muq8s9pt97.cloudfront.net/${keyCookie.value}`}
         />
       </div>

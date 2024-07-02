@@ -14,21 +14,23 @@ import { truncate } from "../lib/truncate";
 
 type ContainerProps = {
   src: string;
+  s3Key: string;
 };
 
 type WaveFormProps = {
   src: string;
+  s3Key: string;
 };
 
-const WaveFormVisualizerContainer = ({ src }: ContainerProps) => {
+const WaveFormVisualizerContainer = ({ src, s3Key }: ContainerProps) => {
   return (
     <>
-      <WaveFormVisualizer src={src} />
+      <WaveFormVisualizer src={src} s3Key={s3Key} />
     </>
   );
 };
 
-const WaveFormVisualizer = ({ src }: WaveFormProps) => {
+const WaveFormVisualizer = ({ src, s3Key }: WaveFormProps) => {
   const waveFormRef = useRef<HTMLDivElement | null>(null);
   let waveSurfer = useRef<WaveSurfer | null>(null);
   let regionRef = useRef<any | null>(null);
@@ -101,8 +103,8 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
 
     waveSurfer.current.on("decode", () => {
       const duration = waveSurfer.current?.getDuration() as number;
-      const start = duration * 0.25;
-      const end = duration * 0.75;
+      const start = 0;
+      const end = duration;
 
       regionRef.current = regions.addRegion({
         start,
@@ -200,6 +202,8 @@ const WaveFormVisualizer = ({ src }: WaveFormProps) => {
               ? truncate(regionBoundaries[1])
               : null
           }
+          rawRegionBoundaries={regionBoundaries}
+          s3Key={s3Key}
         />
       </div>
 
