@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useFormattedTime } from "../hooks/useFormattedTime.hook";
 import { BeatLoader } from "react-spinners";
+import { sendMessage } from "../actions/sendMessage";
 
 type Props = {
   start: number | null;
@@ -28,7 +29,8 @@ const RegionBoundaries = ({
 
   const handleSubmit = () => {
     setLoading(true);
-    console.log(rawRegionBoundaries, s3Key);
+
+    // Submit to SQS
   };
 
   if (start === null || end === null) {
@@ -75,19 +77,24 @@ const RegionBoundaries = ({
           }}
         />
       </div>
-      <button
-        onClick={handleSubmit}
-        disabled={loading}
-        className={`h-10 flex justify-center items-center w-36 tracking-wide disabled:brightness-75 disabled:cursor-not-allowed filter hover:brightness-110 active:brightness-125 saturate-150 text-sm bg-fuchsia-900 font-semibold text-fuchsia-100 rounded-lg px-5 py-2 
+      <form action={sendMessage} onSubmit={handleSubmit}>
+        <input type="hidden" value={s3Key} name="s3Key" />
+        <input type="hidden" value={rawRegionBoundaries[0]} name="start" />
+        <input type="hidden" value={rawRegionBoundaries[1]} name="end" />
+        <button
+          type="submit"
+          disabled={loading}
+          className={`h-10 flex justify-center items-center w-36 tracking-wide disabled:brightness-75 disabled:cursor-not-allowed filter hover:brightness-110 active:brightness-125 saturate-150 text-sm bg-fuchsia-900 font-semibold text-fuchsia-100 rounded-lg px-5 py-2 
 
         }`}
-      >
-        {loading ? (
-          <BeatLoader loading={loading} size={5} color="white" />
-        ) : (
-          "Trim audio"
-        )}
-      </button>
+        >
+          {loading ? (
+            <BeatLoader loading={loading} size={5} color="white" />
+          ) : (
+            "Trim audio"
+          )}
+        </button>
+      </form>
     </div>
   );
 };
