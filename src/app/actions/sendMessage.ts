@@ -24,5 +24,5 @@ export async function sendMessage(formData: FormData) {
     console.error(error);
   }
 
-  if (success) redirect("/processing");
+  if (success) redirect("/file");
 }
