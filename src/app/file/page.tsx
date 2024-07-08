@@ -22,11 +22,7 @@ const InvalidFileKeyScreen = () => {
   );
 };
 
-export default async function FilePage({
-  searchParams,
-}: {
-  searchParams: URLSearchParams;
-}) {
+export default async function FilePage({}) {
   const keyCookie = cookies().get("key");
   return (
     <main
