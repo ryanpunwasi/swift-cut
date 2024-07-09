@@ -5,6 +5,7 @@ import { GetObjectAttributesCommand } from "@aws-sdk/client-s3";
 import { s3 } from "../lib/s3Client";
 import WaveFormVisualizerContainer from "../components/WaveFormVisualizer";
 const inter = Inter({ subsets: ["latin"] });
+import Download from "../components/Download";
 
 const InvalidFileKeyScreen = () => {
   return (
@@ -28,8 +29,8 @@ export default async function FilePage({}) {
     <main
       className={`flex min-w-full min-h-full flex-col items-center justify-center gap-y-20 tracking-wide font-semibold ${inter.className}`}
     >
-      <div className="h-fit md:w-1/2 w-4/5 flex justify-center items-center">
-        {keyCookie?.value}
+      <div className="h-fit md:w-1/2 w-4/5 flex flex-col justify-center items-center">
+        <Download />
       </div>
     </main>
   );
