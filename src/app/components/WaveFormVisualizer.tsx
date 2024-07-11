@@ -11,6 +11,7 @@ import RegionsPlugin from "wavesurfer.js/dist/plugins/regions.esm.js";
 import Hover from "wavesurfer.js/dist/plugins/hover.esm.js";
 import RegionBoundaries from "./RegionBoundaries";
 import { truncate } from "../lib/truncate";
+import LoadingIcon from "./LoadingIcon";
 
 type ContainerProps = {
   src: string;
@@ -190,22 +191,24 @@ const WaveFormVisualizer = ({ src, s3Key }: WaveFormProps) => {
           loading ? "" : "border-r border-l border-gray-300"
         }`}
       ></div>
-      <div className="flex justify-center mt-5">
-        <RegionBoundaries
-          start={
-            regionBoundaries[0] !== undefined
-              ? truncate(regionBoundaries[0])
-              : null
-          }
-          end={
-            regionBoundaries[1] !== undefined
-              ? truncate(regionBoundaries[1])
-              : null
-          }
-          rawRegionBoundaries={regionBoundaries}
-          s3Key={s3Key}
-        />
-      </div>
+      {!loading && (
+        <div className="flex justify-center mt-5">
+          <RegionBoundaries
+            start={
+              regionBoundaries[0] !== undefined
+                ? truncate(regionBoundaries[0])
+                : null
+            }
+            end={
+              regionBoundaries[1] !== undefined
+                ? truncate(regionBoundaries[1])
+                : null
+            }
+            rawRegionBoundaries={regionBoundaries}
+            s3Key={s3Key}
+          />
+        </div>
+      )}
 
       <div className="flex justify-center absolute bottom-10 left-1/2 right-1/2">
         <PlaybackPanel
