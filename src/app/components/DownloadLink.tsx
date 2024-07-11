@@ -1,7 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 
-const DownloadLink = ({ signedURL }: { signedURL: string }) => {
+const DownloadLink = ({
+  signedURL,
+  name,
+}: {
+  signedURL: string;
+  name: string;
+}) => {
   const [blob, setBlob] = useState<Blob | null>(null);
 
   useEffect(() => {
@@ -44,7 +50,7 @@ const DownloadLink = ({ signedURL }: { signedURL: string }) => {
     <>
       {blob && (
         <button
-          onClick={() => downloadBlob()}
+          onClick={() => (name ? downloadBlob(name) : downloadBlob())}
           className="flex items-center justify-center gap-2 w-fit bg-violet-700 rounded-lg mx-auto py-2 px-5 filter hover:brightness-125 transition duration-200 ease-in-out text-white text-sm font-light tracking-wider shadow-md cursor-pointer active:brightness-95 disabled:cursor-not-allowed disabled:select-none disabled:hover:brightness-75 disabled:brightness-75"
         >
           Download
