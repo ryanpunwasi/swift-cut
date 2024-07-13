@@ -188,9 +188,10 @@ const WaveFormVisualizer = ({ src, s3Key }: WaveFormProps) => {
       <div
         ref={waveFormRef}
         className={`hover:cursor-pointer  ${
-          loading ? "" : "border-r border-l border-gray-300"
+          loading ? "h-0" : "border-r border-l border-gray-300"
         }`}
       ></div>
+      {loading && <LoadingIcon text="Drawing waveform..."></LoadingIcon>}
       {!loading && (
         <div className="flex justify-center mt-5">
           <RegionBoundaries
