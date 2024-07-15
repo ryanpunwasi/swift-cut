@@ -20,11 +20,13 @@ const RegionBoundaries = ({
   s3Key,
 }: Props) => {
   const [loading, setLoading] = useState(false);
-  const { minutes: startMinutes, seconds: startSeconds } = useFormattedTime(
-    start || 0
+  const { formattedTime: formattedStartTime } = useFormattedTime(
+    start || 0,
+    "mm:ss:ms"
   );
-  const { minutes: endMinutes, seconds: endSeconds } = useFormattedTime(
-    end || 0
+  const { formattedTime: formattedEndTime } = useFormattedTime(
+    end || 0,
+    "mm:ss:ms"
   );
 
   const handleSubmit = () => {
@@ -43,17 +45,17 @@ const RegionBoundaries = ({
         <span
           data-tooltip-id="region-start-identifier"
           data-tooltip-content="Region start time"
-          className="h-9 bg-zinc-900 px-4 py-1.5 rounded-xl border border-gray-700 w-20 flex justify-center items-center text-blue-200"
+          className="h-9 bg-zinc-900 px-4 py-1.5 rounded-xl border border-gray-700 w-28 flex justify-center items-center text-blue-200"
         >
-          {startMinutes}:{startSeconds}
+          {formattedStartTime}
         </span>
         <span className="font-thin text-gray-500">—</span>
         <span
           data-tooltip-id="region-end-identifier"
           data-tooltip-content="Region end time"
-          className="h-9 bg-zinc-900 px-4 py-1.5 rounded-xl border border-gray-700 w-20 flex justify-center items-center text-blue-200"
+          className="h-9 bg-zinc-900 px-4 py-1.5 rounded-xl border border-gray-700 w-28 flex justify-center items-center text-blue-200"
         >
-          {endMinutes}:{endSeconds}
+          {formattedEndTime}
         </span>
 
         <Tooltip

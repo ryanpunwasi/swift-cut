@@ -1,22 +1,14 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
+import { useFormattedTime } from "./useFormattedTime.hook";
+import { TimeFormat } from "../types";
 
 export const useElapsedTime = () => {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const dateObj = new Date(elapsedSeconds * 1000);
+  const hours = dateObj.getUTCHours();
+  let format: TimeFormat = "hh:mm:ss";
+  if (hours === 0) format = "mm:ss";
+  const { formattedTime } = useFormattedTime(elapsedSeconds, format);
 
-  const minutes = useMemo(() => {
-    let truncatedMinutes = Math.floor(elapsedSeconds / 60);
-    const formattedMinutes = truncatedMinutes.toString();
-    return formattedMinutes;
-  }, [elapsedSeconds]);
-
-  const seconds = useMemo(() => {
-    let truncatedSeconds = Math.round(elapsedSeconds) % 60;
-    const formattedExtraSeconds =
-      truncatedSeconds < 10
-        ? "0" + truncatedSeconds
-        : truncatedSeconds.toString();
-    return formattedExtraSeconds;
-  }, [elapsedSeconds]);
-
-  return { minutes, seconds, setElapsedSeconds };
+  return { formattedTime, setElapsedSeconds };
 };

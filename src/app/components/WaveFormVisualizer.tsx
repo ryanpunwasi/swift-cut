@@ -42,7 +42,7 @@ const WaveFormVisualizer = ({ src, s3Key }: WaveFormProps) => {
     [number, number] | []
   >([]);
 
-  const { minutes, seconds, setElapsedSeconds } = useElapsedTime();
+  const { formattedTime, setElapsedSeconds } = useElapsedTime();
   const { formattedDuration, setDuration } = useDuration(waveSurfer.current);
 
   useKeyDown(" ", () => {
@@ -215,7 +215,7 @@ const WaveFormVisualizer = ({ src, s3Key }: WaveFormProps) => {
         <PlaybackPanel
           waveSurfer={waveSurfer.current}
           duration={formattedDuration}
-          currentTime={`${minutes}:${seconds}`}
+          currentTime={formattedTime}
           playPause={playPause}
           controls={{ playPause, skipForward, skipBackward, toggleMute }}
           isPlaying={isPlaying}
