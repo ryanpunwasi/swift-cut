@@ -29,9 +29,12 @@ export default async function FilePage({}) {
     <main
       className={`flex min-w-full min-h-full flex-col items-center justify-center gap-y-20 tracking-wide font-semibold ${inter.className}`}
     >
-      <div className="h-fit md:w-1/2 w-4/5 flex flex-col justify-center items-center">
-        <Download />
-      </div>
+      {keyCookie && (
+        <div className="h-fit md:w-1/2 w-4/5 flex flex-col justify-center items-center">
+          <Download />
+        </div>
+      )}
+      {!keyCookie && <InvalidFileKeyScreen />}
     </main>
   );
 }
