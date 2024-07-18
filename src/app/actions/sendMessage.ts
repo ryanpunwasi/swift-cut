@@ -1,8 +1,6 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { sqs } from "../lib/sqsClient";
-import { SendMessageCommand } from "@aws-sdk/client-sqs";
 
 export async function sendMessage(formData: FormData) {
   const s3Key = formData.get("s3Key") as string;
@@ -11,15 +9,15 @@ export async function sendMessage(formData: FormData) {
   let success = false;
 
   try {
-    const command = new SendMessageCommand({
-      QueueUrl: process.env.NEXT_PUBLIC_AWS_SQS_URL,
-      MessageBody: JSON.stringify({
-        rawRegionBoundaries: [parseFloat(start), parseFloat(end)],
+    await fetch(process.env.NEXT_PUBLIC_AWS_API_GATEWAY_URL as string, {
+      method: "POST",
+      body: JSON.stringify({
+        start,
+        end,
         s3Key,
       }),
     });
-    const response = await sqs.send(command);
-    if (response.$metadata.httpStatusCode === 200) success = true;
+    success = true;
   } catch (error) {
     console.error(error);
   }
