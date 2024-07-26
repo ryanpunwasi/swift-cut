@@ -31,8 +31,6 @@ const RegionBoundaries = ({
 
   const handleSubmit = () => {
     setLoading(true);
-
-    // Submit to SQS
   };
 
   if (start === null || end === null) {
