@@ -4,8 +4,10 @@ import Link from "next/link";
 import { GetObjectAttributesCommand } from "@aws-sdk/client-s3";
 import { s3 } from "../lib/s3Client";
 import WaveFormVisualizerContainer from "../components/WaveFormVisualizer";
+import { Nunito } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
+const nunito = Nunito({ subsets: ["latin"] });
 
 const InvalidFileKeyScreen = () => {
   return (
@@ -43,6 +45,16 @@ export default async function CutPage() {
       <main
         className={`flex min-w-full min-h-full flex-col items-center justify-center gap-y-20 tracking-wide font-semibold ${inter.className}`}
       >
+        <div className="w-4/5 flex justify-start items-start">
+          {" "}
+          <Link
+            href="/"
+            className={`${nunito.className} font-semibold self-start bg-gray-900 hover:filter hover:brightness-125 duration-200 ease-in-out text-gray-200 rounded-lg px-4 py-2 text-sm`}
+          >
+            ← &nbsp;Home
+          </Link>
+        </div>
+
         <div className="h-fit md:w-1/2 w-4/5 flex justify-center items-center">
           <WaveFormVisualizerContainer
             s3Key={keyCookie.value}
