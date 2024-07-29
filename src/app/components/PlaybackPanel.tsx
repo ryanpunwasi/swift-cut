@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useOutsideAlerter } from "../hooks/useOutsideClick.hook";
 import { FaPlay, FaPause } from "react-icons/fa";
 import {
   FaVolumeHigh,
@@ -133,7 +134,11 @@ const PlaybackPanel = ({
 };
 
 const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
+  const wrapperRef = useRef(null);
   const [open, setOpen] = useState(false);
+  useOutsideAlerter(wrapperRef, () => {
+    setOpen(false);
+  });
   const [sliderValue, setSliderValue] = useState("0");
   const zoomButtonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -144,6 +149,7 @@ const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
   return (
     <div className="relative">
       <div
+        ref={wrapperRef}
         className={`flex flex-col items-center justify-center mx-auto h-52 w-10 rounded-lg absolute bottom-14 z-30 bg-gray-700 transition duration-200 ease-in-out ${
           open ? "opacity-100" : "translate-y-2 opacity-0"
         }`}
@@ -169,7 +175,7 @@ const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
       <button
         ref={zoomButtonRef}
         onClick={() => {
-          setOpen(prev => !prev);
+          setOpen(true);
           zoomButtonRef.current?.blur();
         }}
         className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100"
