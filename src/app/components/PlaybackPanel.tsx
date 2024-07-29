@@ -136,20 +136,25 @@ const PlaybackPanel = ({
 const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
   const wrapperRef = useRef(null);
   const [open, setOpen] = useState(false);
-  useOutsideAlerter(wrapperRef, () => {
-    setOpen(false);
-  });
+
   const [sliderValue, setSliderValue] = useState("0");
   const zoomButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useOutsideAlerter(
+    wrapperRef,
+    () => {
+      setOpen(false);
+    },
+    { target: zoomButtonRef, cb: null }
+  );
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSliderValue(e.target.value);
     waveSurfer?.zoom(Number(e.target.value));
   };
   return (
-    <div className="relative">
+    <div className="relative" ref={wrapperRef}>
       <div
-        ref={wrapperRef}
         className={`flex flex-col items-center justify-center mx-auto h-52 w-10 rounded-lg absolute bottom-14 z-30 bg-gray-700 transition duration-200 ease-in-out ${
           open ? "opacity-100" : "translate-y-2 opacity-0"
         }`}
@@ -173,9 +178,10 @@ const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
         />
       </div>
       <button
+        id="zoom-button"
         ref={zoomButtonRef}
         onClick={() => {
-          setOpen(true);
+          setOpen(prev => !prev);
           zoomButtonRef.current?.blur();
         }}
         className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100"
