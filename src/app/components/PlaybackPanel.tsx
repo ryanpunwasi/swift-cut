@@ -155,7 +155,7 @@ const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
   return (
     <div className="relative" ref={wrapperRef}>
       <div
-        className={`flex flex-col items-center justify-center mx-auto h-52 w-10 rounded-lg absolute bottom-14 z-30 bg-gray-700 transition duration-200 ease-in-out ${
+        className={`flex flex-col items-center justify-center mx-auto h-52 w-10 rounded-lg absolute bottom-14 z-30 bg-gray-700 transition duration-100 ease-in-out ${
           open ? "opacity-100" : "translate-y-2 opacity-0"
         }`}
       >
