@@ -39,6 +39,7 @@ const FileUpload = () => {
       >
         <label
           htmlFor="file"
+          style={{ WebkitBackdropFilter: "blur(5px)" }}
           className="text-gray-200 flex gap-2 flex-col justify-center items-center w-60 h-48 cursor-pointer opacity-95 p-5 rounded-xl border border-gray-700 tracking-wider shadow-md transition duration-200 ease-in-out hover:filter hover:brightness-125 hover:border-gray-600 backdrop-blur-xl bg-white/1"
         >
           <MdOutlineFileUpload size={50} />
