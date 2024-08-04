@@ -5,6 +5,8 @@ import { MdOutlineFileUpload } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import LoadingIcon from "./LoadingIcon";
 
+import { FILE_SIZE_LIMIT } from "../../../config";
+
 const FileUpload = () => {
   const [loading, setLoading] = useState(false);
 
@@ -15,7 +17,19 @@ const FileUpload = () => {
   const onChange = async () => {
     const fileInput = fileRef.current as unknown as HTMLInputElement;
     const filesAsArray = Array.from(fileInput.files!);
-    setFiles(filesAsArray);
+
+    const sizeLimitExceeded = filesAsArray.some(
+      file => file.size > FILE_SIZE_LIMIT
+    );
+
+    if (sizeLimitExceeded) {
+      resetForm();
+      alert(
+        `File size limit exceeded. Please upload files smaller than ${500} MB`
+      );
+    } else {
+      setFiles(filesAsArray);
+    }
   };
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -46,6 +60,7 @@ const FileUpload = () => {
           <p className="text-xs">Browse</p>
         </label>
         <input
+          multiple={false}
           disabled={loading}
           formEncType="multipart/form-data"
           ref={fileRef}
