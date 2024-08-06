@@ -174,6 +174,8 @@ const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
             writingMode: "vertical-lr",
             direction: "rtl",
             MozOrient: "vertical",
+            WebkitWritingMode: "vertical-lr",
+            WebkitAppearance: "slider-vertical",
           }}
         />
       </div>
