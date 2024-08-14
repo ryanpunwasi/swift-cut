@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
-import { surferContext } from "../context/SurferContext";
+import { surferContext } from "../context/surferContext";
 import WaveSurfer from "wavesurfer.js";
 
 interface Props {
   children: JSX.Element;
-  waveSurfer: WaveSurfer;
+  waveSurfer: WaveSurfer | null;
 }
 
 const SurferContext = ({ children, waveSurfer }: Props) => {

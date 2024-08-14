@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { surferContext } from "../context/surferContext";
 import { useFormattedTime } from "../hooks/useFormattedTime.hook";
 import { BeatLoader } from "react-spinners";
 import { sendMessage } from "../actions/sendMessage";
@@ -20,6 +21,7 @@ const RegionBoundaries = ({
   s3Key,
 }: Props) => {
   const [loading, setLoading] = useState(false);
+  const { surfer } = useContext(surferContext);
   const { formattedTime: formattedStartTime } = useFormattedTime(
     start || 0,
     "mm:ss:ms"
@@ -30,6 +32,7 @@ const RegionBoundaries = ({
   );
 
   const handleSubmit = () => {
+    surfer?.pause();
     setLoading(true);
   };
 

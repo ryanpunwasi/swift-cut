@@ -6,6 +6,7 @@ import { useKeyDown } from "../hooks/useKeyDown.hook";
 import { useElapsedTime } from "../hooks/useElapsedTime.hook";
 import { useDuration } from "../hooks/useDuration.hook";
 import PlaybackPanel from "./PlaybackPanel";
+import SurferContext from "./SurferContext";
 
 import RegionsPlugin from "wavesurfer.js/dist/plugins/regions.esm.js";
 import Hover from "wavesurfer.js/dist/plugins/hover.esm.js";
@@ -194,20 +195,22 @@ const WaveFormVisualizer = ({ src, s3Key }: WaveFormProps) => {
       {loading && <LoadingIcon text="Drawing waveform..."></LoadingIcon>}
       {!loading && (
         <div className="flex justify-center mt-5">
-          <RegionBoundaries
-            start={
-              regionBoundaries[0] !== undefined
-                ? truncate(regionBoundaries[0])
-                : null
-            }
-            end={
-              regionBoundaries[1] !== undefined
-                ? truncate(regionBoundaries[1])
-                : null
-            }
-            rawRegionBoundaries={regionBoundaries}
-            s3Key={s3Key}
-          />
+          <SurferContext waveSurfer={waveSurfer.current}>
+            <RegionBoundaries
+              start={
+                regionBoundaries[0] !== undefined
+                  ? truncate(regionBoundaries[0])
+                  : null
+              }
+              end={
+                regionBoundaries[1] !== undefined
+                  ? truncate(regionBoundaries[1])
+                  : null
+              }
+              rawRegionBoundaries={regionBoundaries}
+              s3Key={s3Key}
+            />
+          </SurferContext>
         </div>
       )}
 
