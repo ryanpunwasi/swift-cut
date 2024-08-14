@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import WaveSurfer from "wavesurfer.js/dist/types.js";
+import WaveSurfer from "wavesurfer.js";
 
 interface SurferContext {
   surfer: WaveSurfer | null;
