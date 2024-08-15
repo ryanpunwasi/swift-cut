@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { SetStateAction, Dispatch } from "react";
 import WaveSurfer from "wavesurfer.js";
 import { useKeyDown } from "../hooks/useKeyDown.hook";
 import { useElapsedTime } from "../hooks/useElapsedTime.hook";
@@ -22,17 +23,30 @@ type ContainerProps = {
 type WaveFormProps = {
   src: string;
   s3Key: string;
+  disabled: boolean;
+  setDisabled: Dispatch<SetStateAction<boolean>>;
 };
 
 const WaveFormVisualizerContainer = ({ src, s3Key }: ContainerProps) => {
+  const [disabled, setDisabled] = useState(false);
   return (
     <>
-      <WaveFormVisualizer src={src} s3Key={s3Key} />
+      <WaveFormVisualizer
+        src={src}
+        s3Key={s3Key}
+        setDisabled={setDisabled}
+        disabled={disabled}
+      />
     </>
   );
 };
 
-const WaveFormVisualizer = ({ src, s3Key }: WaveFormProps) => {
+const WaveFormVisualizer = ({
+  src,
+  s3Key,
+  setDisabled,
+  disabled,
+}: WaveFormProps) => {
   const waveFormRef = useRef<HTMLDivElement | null>(null);
   let waveSurfer = useRef<WaveSurfer | null>(null);
   let regionRef = useRef<any | null>(null);
@@ -47,27 +61,27 @@ const WaveFormVisualizer = ({ src, s3Key }: WaveFormProps) => {
   const { formattedDuration, setDuration } = useDuration(waveSurfer.current);
 
   useKeyDown(" ", () => {
-    waveSurfer.current?.playPause();
+    if (!disabled) waveSurfer.current?.playPause();
   });
 
   useKeyDown("k", () => {
-    waveSurfer.current?.playPause();
+    if (!disabled) waveSurfer.current?.playPause();
   });
 
   useKeyDown("m", () => {
-    toggleMute();
+    if (!disabled) toggleMute();
   });
 
   useKeyDown("ArrowRight", () => {
-    waveSurfer.current?.skip(5);
+    if (!disabled) waveSurfer.current?.skip(5);
   });
 
   useKeyDown("ArrowLeft", () => {
-    waveSurfer.current?.skip(-5);
+    if (!disabled) waveSurfer.current?.skip(-5);
   });
 
   useKeyDown("0", () => {
-    waveSurfer.current?.setTime(0);
+    if (!disabled) waveSurfer.current?.setTime(0);
   });
 
   useEffect(() => {
@@ -197,6 +211,7 @@ const WaveFormVisualizer = ({ src, s3Key }: WaveFormProps) => {
         <div className="flex justify-center mt-5">
           <SurferContext waveSurfer={waveSurfer.current}>
             <RegionBoundaries
+              setDisabled={setDisabled}
               start={
                 regionBoundaries[0] !== undefined
                   ? truncate(regionBoundaries[0])
@@ -216,6 +231,7 @@ const WaveFormVisualizer = ({ src, s3Key }: WaveFormProps) => {
 
       <div className="flex justify-center absolute bottom-10 left-1/2 right-1/2">
         <PlaybackPanel
+          disabled={disabled}
           waveSurfer={waveSurfer.current}
           duration={formattedDuration}
           currentTime={formattedTime}

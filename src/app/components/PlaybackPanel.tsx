@@ -28,6 +28,7 @@ type Props = {
   setIsPlaying: (isPlaying: boolean) => void;
   isMuted: boolean;
   waveSurfer: any;
+  disabled?: boolean;
 };
 
 const PlaybackPanel = ({
@@ -38,6 +39,7 @@ const PlaybackPanel = ({
   isPlaying,
   isMuted,
   waveSurfer,
+  disabled,
 }: Props) => {
   const skipBackButtonRef = useRef<HTMLButtonElement | null>(null);
   const skipForwardButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -64,6 +66,7 @@ const PlaybackPanel = ({
         {currentTime}
       </span>
       <button
+        disabled={disabled}
         ref={volumeButtonRef}
         onClick={handleMuteToggle}
         className="text-gray-200 hover:bg-gray-600 rounded-lg py-2 px-3 transition ease-in-out duration-100"
@@ -72,6 +75,7 @@ const PlaybackPanel = ({
         {isMuted && <FaVolumeXmark size={20} className="text-red-300" />}
       </button>
       <button
+        disabled={disabled}
         data-tooltip-id="skip-backward-toolip-identifier"
         data-tooltip-content="-5 seconds"
         ref={skipBackButtonRef}
@@ -82,6 +86,7 @@ const PlaybackPanel = ({
       </button>
       {!isPlaying && (
         <button
+          disabled={disabled}
           onClick={playPause}
           className="w-12 text-gray-50 filter hover:scale-110 active:brightness-110 rounded-lg p-3 transition ease-in-out duration-100 flex justify-center items-center"
         >
@@ -90,6 +95,7 @@ const PlaybackPanel = ({
       )}
       {isPlaying && (
         <button
+          disabled={disabled}
           onClick={controls.playPause}
           className="w-12 text-gray-50 filter hover:scale-110 active:brightness-110 rounded-full p-3 transition ease-in-out duration-100 flex justify-center items-center"
         >
@@ -97,6 +103,7 @@ const PlaybackPanel = ({
         </button>
       )}
       <button
+        disabled={disabled}
         data-tooltip-id="skip-forward-toolip-identifier"
         data-tooltip-content="+5 seconds"
         ref={skipForwardButtonRef}
@@ -105,7 +112,7 @@ const PlaybackPanel = ({
       >
         <PiSkipForwardFill size={20} />
       </button>
-      <ZoomControl waveSurfer={waveSurfer} />
+      <ZoomControl waveSurfer={waveSurfer} disabled={disabled} />
       <span className="w-12 text-gray-400 text-sm flex justify-center">
         {duration}
       </span>
@@ -133,7 +140,13 @@ const PlaybackPanel = ({
   );
 };
 
-const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
+const ZoomControl = ({
+  waveSurfer,
+  disabled,
+}: {
+  waveSurfer: WaveSurfer | null;
+  disabled?: boolean;
+}) => {
   const wrapperRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -162,6 +175,7 @@ const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
         <span className="absolute top-0">+</span>
         <span className="absolute bottom-0">-</span>
         <input
+          disabled={disabled}
           type="range"
           id="zoom"
           name="zoom"
@@ -181,6 +195,7 @@ const ZoomControl = ({ waveSurfer }: { waveSurfer: WaveSurfer | null }) => {
       </div>
       <button
         id="zoom-button"
+        disabled={disabled}
         ref={zoomButtonRef}
         onClick={() => {
           setOpen(prev => !prev);

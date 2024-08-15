@@ -10,6 +10,7 @@ type Props = {
   end: number | null;
   rawRegionBoundaries: [number, number] | [];
   s3Key: string;
+  setDisabled: (disabled: boolean) => void;
 };
 
 import { Tooltip } from "react-tooltip";
@@ -19,6 +20,7 @@ const RegionBoundaries = ({
   end,
   rawRegionBoundaries,
   s3Key,
+  setDisabled,
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const { surfer } = useContext(surferContext);
@@ -33,6 +35,7 @@ const RegionBoundaries = ({
 
   const handleSubmit = () => {
     surfer?.pause();
+    setDisabled(true);
     setLoading(true);
   };
 
