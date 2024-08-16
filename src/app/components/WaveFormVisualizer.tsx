@@ -119,8 +119,8 @@ const WaveFormVisualizer = ({
 
     waveSurfer.current.on("decode", () => {
       const duration = waveSurfer.current?.getDuration() as number;
-      const start = 0;
-      const end = duration;
+      const start = duration * 0.25;
+      const end = duration * 0.75;
 
       regionRef.current = regions.addRegion({
         start,
