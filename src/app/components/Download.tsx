@@ -34,7 +34,10 @@ const Download = async () => {
   return (
     <div className="flex flex-col gap-10">
       <div className="bg-gray-900 text-gray-300 border-4 border-gray-800 gap-5 border-dashed rounded-lg flex flex-col justify-center items-center rounded-l w-96 h-56">
-        <FaHeadphonesAlt className="text-gray-600 animate-bounce" size={50} />
+        <FaHeadphonesAlt
+          className="dark:text-gray-500 text-gray-600 animate-bounce"
+          size={50}
+        />
         <div className="flex flex-col gap-2 items-center justify-center">
           <span className="font-normal">
             {fileType ? `audio.${fileType.ext}` : "Ready to download!"}
